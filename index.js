@@ -39,7 +39,7 @@ SceneAsDevices.prototype.initDriver = function (options, memories) {
     this.specConfig = _.cloneDeep( (options && options.extOptions) || {});
     //specconfig里的信息在extendID里
 
-    this.procSpecInOrEx();
+   // this.procSpecInOrEx();
 };
 SceneAsDevices.prototype.WriteWQ = function (mapItem, value, devId) {
     let results = this.CreateWQWriter(mapItem, value, function (reg, regValue) {
@@ -57,6 +57,7 @@ SceneAsDevices.prototype.ReadWQ = function (mapItem, devId) {
     });
 };
 SceneAsDevices.prototype.setInOrEx = function (option) {
+    console.log('...................>>>>>>>>>>>>>>>>>');
     this.procSpecInOrEx();
 }
 
@@ -67,6 +68,20 @@ SceneAsDevices.prototype.procSpecInOrEx = function () {
     let addDevices = {};
     let delDevices = {};
 
+    function getSceneAsDevice(mode){
+        let result = 'SceneAsDevice';
+        switch(mode){
+            case 'IN':
+                result = 'SceneAsDeviceIN';
+                break;
+            case 'SLEEP':
+                result = 'SceneAsDeviceSleep';
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
     _.each(this.specConfig, function (info, sceneId) {
 
         let item =this.exitsConfig[sceneId] || {};
@@ -74,7 +89,7 @@ SceneAsDevices.prototype.procSpecInOrEx = function () {
 
         if (!_.isEqual(this.specConfig[sceneId],this.exitsConfig[sceneId])) {
             addDevices[sceneId] = {
-                uniqueId: ((info.config && info.config.mode) ? 'SceneAsDevice' : 'SceneAsDeviceCustom'),
+                uniqueId: ((info.config && info.config.mode) ? getSceneAsDevice(info.config.mode) : 'SceneAsDeviceCustom'),
                 nameInGroup: info.nameInGroup,
                 groupId: ".",
                 config: {mode: ((info.config && info.config.mode)?info.config.mode:undefined), scene:( (info.config && info.config.mode) ? undefined : sceneId)}
@@ -87,7 +102,7 @@ SceneAsDevices.prototype.procSpecInOrEx = function () {
         }
     }.bind(this));
 
-
+    console.log('>>>>>>>>>>>>>>>>..................');
     if (!_.isEmpty(addDevices))
         this.inOrEx({type: "in", devices: addDevices});//uniqueKey:nodeid,uniqueId:nodeinfo.manufacturerid+nodeinfo.productid})
     //console.log('new Devices:',addDevices);
