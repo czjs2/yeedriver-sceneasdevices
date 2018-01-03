@@ -39,7 +39,10 @@ SceneAsDevices.prototype.initDriver = function (options, memories) {
     this.specConfig = _.cloneDeep( (options && options.extOptions) || {});
     //specconfig里的信息在extendID里
 
-   // this.procSpecInOrEx();
+    if(_.isEmpty(this.exitsConfig)){
+        this.procSpecInOrEx();
+    }
+
 };
 SceneAsDevices.prototype.WriteWQ = function (mapItem, value, devId) {
     let results = this.CreateWQWriter(mapItem, value, function (reg, regValue) {
