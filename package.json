@@ -1,6 +1,6 @@
 {
   "name": "yeedriver-sceneasdevices",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "yeedriver SceneAsDevices ",
   "main": "index.js",
   "scripts": {
